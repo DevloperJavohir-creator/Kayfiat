@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soliha uchun 💗</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(160deg, #f4f1ee 0%, #e9e4e0 60%, #f4f1ee 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 12px 60px;
+    color: #4a2c3a;
+  }
+  h1 {
+    font-size: clamp(28px, 8vw, 44px);
+    text-align: center;
+    margin: 20px 0 6px;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 16px;
+    opacity: 0.85;
+    margin-bottom: 24px;
+  }
+  .card {
+    background: rgba(255,255,255,0.85);
+    border-radius: 20px;
+    padding: 20px;
+    max-width: 480px;
+    width: 100%;
+    margin-bottom: 22px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    backdrop-filter: blur(6px);
+  }
+  .card h2 {
+    margin-top: 0;
+    font-size: 20px;
+    color: #c2185b;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .meaning-text {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .countdown-box {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin: 14px 0 6px;
+    flex-wrap: wrap;
+  }
+  .time-piece {
+    background: linear-gradient(135deg, #ff6f91, #ff9671);
+    color: white;
+    border-radius: 14px;
+    padding: 12px 14px;
+    min-width: 64px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(255,111,145,0.4);
+  }
+  .time-piece .num {
+    font-size: 26px;
+    font-weight: bold;
+    display: block;
+  }
+  .time-piece .label {
+    font-size: 11px;
+    opacity: 0.9;
+  }
+  .game-area {
+    text-align: center;
+  }
+  #guessInput {
+    font-size: 20px;
+    text-align: center;
+    width: 100px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 2px solid #ee9ca7;
+    outline: none;
+    margin-bottom: 10px;
+  }
+  #guessBtn, #resetBtn {
+    font-size: 16px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 10px;
+    background: #c2185b;
+    color: white;
+    cursor: pointer;
+    margin: 4px;
+    transition: transform 0.15s ease;
+  }
+  #guessBtn:hover, #resetBtn:hover { transform: scale(1.05); }
+  #resetBtn { background: #7b8794; display: none; }
+  #hint {
+    margin-top: 12px;
+    font-size: 17px;
+    font-weight: 600;
+    min-height: 26px;
+  }
+  #tries {
+    font-size: 13px;
+    opacity: 0.7;
+  }
+  .footer-note {
+    text-align: center;
+    font-size: 13px;
+    opacity: 0.6;
+    margin-top: 10px;
+  }
+  .win {
+    color: #2e7d32 !important;
+  }
+
+</style>
+</head>
+<body>
+
+  <h1>Soliha</h1>
+  <div class="subtitle">Ism ma'nosi, sana hisoblagichi va kichik o'yin</div>
+
+  <!-- ISM MA'NOSI -->
+  <div class="card">
+    <h2>"Soliha" ismining ma'nosi</h2>
+    <div class="meaning-text">
+      <b>Soliha</b> — arabcha "solih" so'zining ayollik shakli bo'lib, <b>"solih ayol", "yaxshi, ezgu, oqila, taqvodor ayol"</b> degan ma'noni bildiradi.
+      <br><br>
+      Bu ism o'z egasining qalbi pok, xulqi go'zal, insonlarga mehribon va yaxshi ishlarga intiluvchan bo'lishidan nishona hisoblanadi. Islom dunyosida bu ism juda hurmatli va ma'noli ismlardan biri sanaladi.
+    </div>
+  </div>
+
+  <!-- COUNTDOWN -->
+  <div class="card">
+    <h2>Tug'ilgan kuningga qolgan vaqt</h2>
+    <div class="countdown-box" id="countdownBox">
+      <div class="time-piece"><span class="num" id="cd-days">--</span><span class="label">kun</span></div>
+      <div class="time-piece"><span class="num" id="cd-hours">--</span><span class="label">soat</span></div>
+      <div class="time-piece"><span class="num" id="cd-mins">--</span><span class="label">daqiqa</span></div>
+      <div class="time-piece"><span class="num" id="cd-secs">--</span><span class="label">soniya</span></div>
+    </div>
+    <div class="footer-note" id="cdText"></div>
+  </div>
+
+  <!-- GAME -->
+  <div class="card game-area">
+    <h2 style="justify-content:center;">Raqamni top! (1–100)</h2>
+    <p style="font-size:14px; margin-top:-4px;">Men 1 dan 100 gachа raqam o'yladim. Sen topa olasanmi?</p>
+    <input type="number" id="guessInput" min="1" max="100" placeholder="?">
+    <br>
+    <button id="guessBtn">Tekshir</button>
+    <button id="resetBtn">Qayta boshlash</button>
+    <div id="hint">Boshlash uchun raqam kirit</div>
+    <div id="tries">Urinishlar: 0</div>
+  </div>
+
+  <div class="footer-note">Soliha uchun tayyorlangan sahifa</div>
+
+<script>
+  // ---------- COUNTDOWN TO MARCH 8 ----------
+  function updateCountdown() {
+    const now = new Date();
+    let year = now.getFullYear();
+    let target = new Date(year, 2, 8, 0, 0, 0); // March is month index 2
+    if (now > target) {
+      target = new Date(year + 1, 2, 8, 0, 0, 0);
+    }
+    const diff = target - now;
+
+    const days = Math.floor(diff / (1000*60*60*24));
+    const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+    const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
+    const secs = Math.floor((diff % (1000*60)) / 1000);
+
+    document.getElementById('cd-days').textContent = days;
+    document.getElementById('cd-hours').textContent = hours;
+    document.getElementById('cd-mins').textContent = mins;
+    document.getElementById('cd-secs').textContent = secs;
+
+    document.getElementById('cdText').textContent =
+      "8-mart kuni tug'ilgan kuning — sanoq boshlandi!";
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // ---------- NUMBER GUESSING GAME ----------
+  let secretNumber = Math.floor(Math.random() * 100) + 1;
+  let tries = 0;
+  let gameOver = false;
+
+  const guessInput = document.getElementById('guessInput');
+  const guessBtn = document.getElementById('guessBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const hint = document.getElementById('hint');
+  const triesEl = document.getElementById('tries');
+
+  function checkGuess() {
+    if (gameOver) return;
+    const val = parseInt(guessInput.value, 10);
+    if (isNaN(val) || val < 1 || val > 100) {
+      hint.textContent = "1 dan 100 gacha raqam kirit!";
+      hint.className = "";
+      return;
+    }
+    tries++;
+    triesEl.textContent = "Urinishlar: " + tries;
+
+    if (val === secretNumber) {
+      hint.textContent = "🎉 To'g'ri topdingiz! Raqam " + secretNumber + " edi!";
+      hint.className = "win";
+      gameOver = true;
+      guessBtn.style.display = "none";
+      resetBtn.style.display = "inline-block";
+    } else if (val < secretNumber) {
+      hint.textContent = "⬆️ Yuqoriroq raqam o'ylang";
+      hint.className = "";
+    } else {
+      hint.textContent = "⬇️ Pastroq raqam o'ylang";
+      hint.className = "";
+    }
+  }
+
+  function resetGame() {
+    secretNumber = Math.floor(Math.random() * 100) + 1;
+    tries = 0;
+    gameOver = false;
+    guessInput.value = "";
+    triesEl.textContent = "Urinishlar: 0";
+    hint.textContent = "Yangi o'yin boshlandi! Raqam kirit";
+    hint.className = "";
+    guessBtn.style.display = "inline-block";
+    resetBtn.style.display = "none";
+  }
+
+  guessBtn.addEventListener('click', checkGuess);
+  resetBtn.addEventListener('click', resetGame);
+  guessInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') checkGuess();
+  });
+</script>
+
+</body>
+</html>
